@@ -1,4 +1,16 @@
 [{
+    "name": "description_template",
+    "desc": "Описание платежа",
+    "xtype": "textfield",
+    "options": [],
+    "value": "Оплата заказа №%id%",
+    "lexicon": "",
+    "overridden": false,
+    "desc_trans": "",
+    "area": "",
+    "area_trans": "",
+    "menu": null
+}, {
     "name": "account",
     "desc": "Номер кошелька Яндекс (для физлиц)",
     "xtype": "textfield",
@@ -180,64 +192,62 @@
     "menu": null
 }, {
     "name": "testmode",
-    "desc": "Ставка по умолчанию.",
+    "desc": "",
     "xtype": "combo-boolean",
     "options": [],
     "value": true,
     "lexicon": "",
     "overridden": false,
+    "desc_trans": "",
+    "area": "",
+    "area_trans": "",
+    "menu": null
+}, {
+    "name": "tax_id",
+    "desc": "Ставка по умолчанию.",
+    "xtype": "list",
+    "options": [{
+        "text": "Без НДС",
+        "value": "1",
+        "name": "Без НДС"
+    }, {
+        "text": "10%",
+        "value": "3",
+        "name": "10%"
+    }, {
+        "text": "0%",
+        "value": "2",
+        "name": "0%"
+    }, {
+        "text": "18%",
+        "value": "4",
+        "name": "18%"
+    }, {
+        "text": "Расчётная ставка 10/110",
+        "value": "5",
+        "name": "Расчётная ставка 10/110"
+    }, {
+        "text": "Расчётная ставка 18/118",
+        "value": "6",
+        "name": "Расчётная ставка 18/118"
+    }],
+    "value": "4",
+    "lexicon": "",
+    "overridden": false,
     "desc_trans": "Ставка по умолчанию будет в чеке, если в карточке товара не указана другая ставка.",
     "area": "",
     "area_trans": "",
-    "menu": null,
-    {
-        "name": "tax_id",
-        "desc": "",
-        "xtype": "list",
-        "options": [{
-            "text": "Без НДС",
-            "value": "1",
-            "name": "Без НДС"
-        }, {
-            "text": "10%",
-            "value": "3",
-            "name": "10%"
-        }, {
-            "text": "0%",
-            "value": "2",
-            "name": "0%"
-        }, {
-            "text": "18%",
-            "value": "4",
-            "name": "18%"
-        }, {
-            "text": "Расчётная ставка 10/110",
-            "value": "5",
-            "name": "Расчётная ставка 10/110"
-        }, {
-            "text": "Расчётная ставка 18/118",
-            "value": "6",
-            "name": "Расчётная ставка 18/118"
-        }],
-        "value": "4",
-        "lexicon": "",
-        "overridden": false,
-        "desc_trans": "",
-        "area": "",
-        "area_trans": "",
-        "menu": null
-    },
-    {
-        "name": "ya_kassa_send_check",
-        "desc": "Отправлять в Яндекс.Кассу данные для чеков (54-ФЗ)",
-        "xtype": "combo-boolean",
-        "options": [],
-        "value": true,
-        "lexicon": "",
-        "overridden": false,
-        "desc_trans": "Отправлять в Яндекс.Кассу данные для чеков (54-ФЗ) НДС",
-        "area": "",
-        "area_trans": "",
-        "menu": null
-    }
+    "menu": null
+}, {
+    "name": "ya_kassa_send_check",
+    "desc": "Отправлять в Яндекс.Кассу данные для чеков (54-ФЗ)",
+    "xtype": "combo-boolean",
+    "options": [],
+    "value": true,
+    "lexicon": "",
+    "overridden": false,
+    "desc_trans": "Отправлять в Яндекс.Кассу данные для чеков (54-ФЗ) НДС",
+    "area": "",
+    "area_trans": "",
+    "menu": null
 }]

@@ -10,6 +10,8 @@
  * @version 2.0.0
  */
 
+use YandexCheckout\Model\Payment;
+
 require_once YANDEXMONEY_PATH.'lib/autoload.php';
 
 $modx->addPackage('yandexmoney', YANDEXMONEY_PATH . 'model/');
@@ -306,10 +308,11 @@ class Yandexmoney
             $builder->setClientIp($_SERVER['REMOTE_ADDR'])
                 ->setAmount($this->orderTotal)
                 ->setCapture(true)
+                ->setDescription($this->createDescription($order))
                 ->setMetadata(array(
                     'order_id' => $this->orderId,
                     'cms_name' => 'ya_api_modx_revolution',
-                    'module_version' => '1.0.1',
+                    'module_version' => '1.0.2',
                 ));
             $confirmation = array(
                 'type' => \YandexCheckout\Model\ConfirmationType::REDIRECT,
@@ -346,18 +349,7 @@ class Yandexmoney
         }
 
         try {
-            $key = $this->orderId . '-' . microtime(true);
-            $tries = 0;
-            do {
-                $response = $this->getClient()->createPayment($request, $key);
-                if ($response === null) {
-                    $tries++;
-                    if ($tries >= 3) {
-                        break;
-                    }
-                    sleep(2);
-                }
-            } while ($response === null);
+            $response = $this->getClient()->createPayment($request);
         } catch (\Exception $e) {
             $this->log('error', 'Failed to create payment: ' . $e->getMessage());
             return null;
@@ -416,18 +408,7 @@ class Yandexmoney
                 return null;
             }
             try {
-                $key = $this->orderId . '-' . microtime(true);
-                $tries = 0;
-                do {
-                    $response = $this->getClient()->capturePayment($request, $payment->getId(), $key);
-                    if ($response === null) {
-                        $tries++;
-                        if ($tries >= 3) {
-                            break;
-                        }
-                        sleep(2);
-                    }
-                } while ($response === null);
+                $response = $this->getClient()->capturePayment($request, $payment->getId());
             } catch (\Exception $e) {
                 return null;
             }
@@ -608,5 +589,29 @@ class Yandexmoney
         fwrite($fd, date(DATE_ATOM) . ' [' . $level . '] - ' . $message . PHP_EOL);
         flock($fd, LOCK_UN);
         fclose($fd);
+    }
+
+    /**
+     * @param $order
+     * @return string
+     */
+    private function createDescription($order)
+    {
+        $descriptionTemplate = !empty($this->config['description_template'])
+            ? $this->config['description_template']
+            : 'Оплата заказа №%id%';
+
+        $replace  = array();
+        $patterns = explode('%', $descriptionTemplate);
+        foreach ($patterns as $pattern) {
+            $value = $order->get($pattern);
+            if (!is_null($value) && is_scalar($value)) {
+                $replace['%'.$pattern.'%'] = $value;
+            }
+        }
+
+        $description = strtr($descriptionTemplate, $replace);
+
+        return (string)mb_substr($description, 0, Payment::MAX_LENGTH_DESCRIPTION);
     }
 }
