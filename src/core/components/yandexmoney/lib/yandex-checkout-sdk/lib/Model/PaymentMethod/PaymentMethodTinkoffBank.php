@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The MIT License
  *
@@ -23,31 +22,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+namespace YandexCheckout\Model\PaymentMethod;
 
-namespace YandexCheckout\Model;
 
-use YandexCheckout\Common\AbstractEnum;
+use YandexCheckout\Model\PaymentMethodType;
 
-/**
- * CurrencyCode - Код валюты, ISO-4217 3-alpha currency symbol
- */
-class CurrencyCode extends AbstractEnum
+class PaymentMethodTinkoffBank extends AbstractPaymentMethod
 {
-    const RUB = 'RUB';
-    const USD = 'USD';
-    const EUR = 'EUR';
-    const BYN = 'BYN';
-    const CNY = 'CNY';
-    const KZT = 'KZT';
-    const UAH = 'UAH';
-
-    protected static $validValues = array(
-        self::RUB => true,
-        self::USD => true,
-        self::EUR => true,
-        self::BYN => true,
-        self::CNY => true,
-        self::KZT => true,
-        self::UAH => true,
-    );
+    public function __construct()
+    {
+        $this->_setType(PaymentMethodType::TINKOFF_BANK);
+    }
 }
