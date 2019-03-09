@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The MIT License
  *
@@ -24,30 +23,15 @@
  * THE SOFTWARE.
  */
 
-namespace YandexCheckout\Model;
+namespace YandexCheckout\Model\PaymentMethod;
 
-use YandexCheckout\Common\AbstractEnum;
 
-/**
- * CurrencyCode - Код валюты, ISO-4217 3-alpha currency symbol
- */
-class CurrencyCode extends AbstractEnum
+use YandexCheckout\Model\PaymentMethodType;
+
+class PaymentMethodPsb extends AbstractPaymentMethod
 {
-    const RUB = 'RUB';
-    const USD = 'USD';
-    const EUR = 'EUR';
-    const BYN = 'BYN';
-    const CNY = 'CNY';
-    const KZT = 'KZT';
-    const UAH = 'UAH';
-
-    protected static $validValues = array(
-        self::RUB => true,
-        self::USD => true,
-        self::EUR => true,
-        self::BYN => true,
-        self::CNY => true,
-        self::KZT => true,
-        self::UAH => true,
-    );
+    public function __construct()
+    {
+        $this->_setType(PaymentMethodType::PSB);
+    }
 }

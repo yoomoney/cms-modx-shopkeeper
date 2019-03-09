@@ -200,6 +200,7 @@ class Yandexmoney
                 \YandexCheckout\Model\PaymentMethodType::YANDEX_MONEY => array('ym', 'Оплата из кошелька в Яндекс.Деньгах'),
                 \YandexCheckout\Model\PaymentMethodType::BANK_CARD => array('cards', 'Оплата с произвольной банковской карты'),
                 \YandexCheckout\Model\PaymentMethodType::INSTALLMENTS => array('installments', 'Заплатить по частям'),
+                \YandexCheckout\Model\PaymentMethodType::TINKOFF_BANK => array('tinkoff_bank', 'Интернет-банк Тинькофф'),
             );
             $list_methods = array();
             foreach (\YandexCheckout\Model\PaymentMethodType::getEnabledValues() as $paymentMethodCode) {
@@ -312,7 +313,7 @@ class Yandexmoney
                 ->setMetadata(array(
                     'order_id' => $this->orderId,
                     'cms_name' => 'ya_api_modx_revolution',
-                    'module_version' => '1.0.2',
+                    'module_version' => '1.0.3',
                 ));
             $confirmation = array(
                 'type' => \YandexCheckout\Model\ConfirmationType::REDIRECT,

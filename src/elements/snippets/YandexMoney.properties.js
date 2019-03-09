@@ -59,6 +59,18 @@
     "area_trans": "",
     "menu": null
 }, {
+    "name": "method_tinkoff_bank",
+    "desc": "Интернет-банк Тинькофф",
+    "xtype": "combo-boolean",
+    "options": [],
+    "value": true,
+    "lexicon": "",
+    "overridden": false,
+    "desc_trans": "Интернет-банк Тинькофф",
+    "area": "",
+    "area_trans": "",
+    "menu": null
+}, {
     "name": "method_cash",
     "desc": "Использовать способ оплаты - наличными в кассах и терминалах партнеров (только для юрлиц)",
     "xtype": "combo-boolean",
