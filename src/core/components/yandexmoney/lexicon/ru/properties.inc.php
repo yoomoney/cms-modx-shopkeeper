@@ -31,9 +31,9 @@ $_lang['prop_yandexmoney.mode_billing'] = 'Яндекс.Платежка (бан
 $_lang['prop_yandexmoney.tax_without_tax'] = 'Без НДС';
 $_lang['prop_yandexmoney.tax_zero'] = '0%';
 $_lang['prop_yandexmoney.tax_ten'] = '10%';
-$_lang['prop_yandexmoney.tax_eightteen'] = '18%';
-$_lang['prop_yandexmoney.tax_ten_dev'] = 'Расчётная ставка 10/110';
-$_lang['prop_yandexmoney.tax_eightteen_rev'] = 'Расчётная ставка 18/118';
+$_lang['prop_yandexmoney.tax_twenty'] = '20%';
+$_lang['prop_yandexmoney.tax_ten_dev'] = 'Расчетная ставка 10/110';
+$_lang['prop_yandexmoney.tax_twenty_rev'] = 'Расчетная ставка 20/120';
 
 $_lang['prop_yandexmoney.status_new'] = 'Новый';
 $_lang['prop_yandexmoney.status_payment'] = 'Принят к оплате';

@@ -30,9 +30,9 @@ $_lang['prop_yandexmoney.mode_billing'] = 'mode_billing';
 $_lang['prop_yandexmoney.tax_without_tax'] = 'tax_without_tax';
 $_lang['prop_yandexmoney.tax_zero'] = 'tax_zero';
 $_lang['prop_yandexmoney.tax_ten'] = 'tax_ten';
-$_lang['prop_yandexmoney.tax_eightteen'] = 'tax_eightteen';
+$_lang['prop_yandexmoney.tax_twenty'] = 'tax_twenty';
 $_lang['prop_yandexmoney.tax_ten_dev'] = 'tax_ten_dev';
-$_lang['prop_yandexmoney.tax_eightteen_rev'] = 'tax_eightteen_rev';
+$_lang['prop_yandexmoney.tax_twenty_rev'] = 'tax_twenty_rev';
 
 $_lang['prop_yandexmoney.status_new'] = 'status_new';
 $_lang['prop_yandexmoney.status_payment'] = 'status_payment';

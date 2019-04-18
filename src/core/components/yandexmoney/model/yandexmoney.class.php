@@ -313,7 +313,7 @@ class Yandexmoney
                 ->setMetadata(array(
                     'order_id' => $this->orderId,
                     'cms_name' => 'ya_api_modx_revolution',
-                    'module_version' => '1.0.3',
+                    'module_version' => '1.0.4',
                 ));
             $confirmation = array(
                 'type' => \YandexCheckout\Model\ConfirmationType::REDIRECT,
