@@ -262,4 +262,300 @@
     "area": "",
     "area_trans": "",
     "menu": null
+}, {
+    "name": "ya_kassa_payment_subject",
+    "desc": "Признак предмета расчета",
+    "xtype": "list",
+    "options": [{
+        "text": "Товар (commodity)",
+        "value": "commodity",
+        "name": "Товар (commodity)"
+    }, {
+        "text": "Подакцизный товар (excise)",
+        "value": "excise",
+        "name": "Подакцизный товар (excise)"
+    }, {
+        "text": "Работа (job)",
+        "value": "job",
+        "name": "Работа (job)"
+    }, {
+        "text": "Услуга (service)",
+        "value": "service",
+        "name": "Услуга (service)"
+    }, {
+        "text": "Ставка в азартной игре (gambling_bet)",
+        "value": "gambling_bet",
+        "name": "Ставка в азартной игре (gambling_bet)"
+    }, {
+        "text": "Выигрыш в азартной игре (gambling_prize)",
+        "value": "gambling_prize",
+        "name": "Выигрыш в азартной игре (gambling_prize)"
+    }, {
+        "text": "Лотерейный билет (lottery)",
+        "value": "lottery",
+        "name": "Лотерейный билет (lottery)"
+    }, {
+        "text": "Выигрыш в лотерею (lottery_prize)",
+        "value": "lottery_prize",
+        "name": "Выигрыш в лотерею (lottery_prize)"
+    }, {
+        "text": "Результаты интеллектуальной деятельности (intellectual_activity)",
+        "value": "intellectual_activity",
+        "name": "Результаты интеллектуальной деятельности (intellectual_activity)"
+    }, {
+        "text": "Платеж (payment)",
+        "value": "payment",
+        "name": "Платеж (payment)"
+    }, {
+        "text": "Агентское вознаграждение (agent_commission)",
+        "value": "agent_commission",
+        "name": "Агентское вознаграждение (agent_commission)"
+    }, {
+        "text": "Имущественные права (property_right)",
+        "value": "property_right",
+        "name": "Имущественные права (property_right)"
+    }, {
+        "text": "Внереализационный доход (non_operating_gain)",
+        "value": "non_operating_gain",
+        "name": "Внереализационный доход (non_operating_gain)"
+    }, {
+        "text": "Страховой сбор (insurance_premium)",
+        "value": "insurance_premium",
+        "name": "Страховой сбор (insurance_premium)"
+    }, {
+        "text": "Торговый сбор (sales_tax)",
+        "value": "sales_tax",
+        "name": "Торговый сбор (sales_tax)"
+    }, {
+        "text": "Курортный сбор (resort_fee)",
+        "value": "resort_fee",
+        "name": "Курортный сбор (resort_fee)"
+    }, {
+        "text": "Несколько вариантов (composite)",
+        "value": "composite",
+        "name": "Несколько вариантов (composite)"
+    }, {
+        "text": "Другое (another)",
+        "value": "another",
+        "name": "Другое (another)"
+    }],
+    "value": "commodity",
+    "lexicon": "",
+    "overridden": false,
+    "desc_trans": "Признак предмета расчета",
+    "area": "",
+    "area_trans": "",
+    "menu": null
+}, {
+    "name": "ya_kassa_payment_mode",
+    "desc": "Признак способа расчета",
+    "xtype": "list",
+    "options": [{
+        "text": "Полная предоплата (full_prepayment)",
+        "value": "full_prepayment",
+        "name": "Полная предоплата (full_prepayment)"
+    }, {
+        "text": "Частичная предоплата (partial_prepayment)",
+        "value": "partial_prepayment",
+        "name": "Частичная предоплата (partial_prepayment)"
+    }, {
+        "text": "Аванс (advance)",
+        "value": "advance",
+        "name": "Аванс (advance)"
+    }, {
+        "text": "Полный расчет (full_payment)",
+        "value": "full_payment",
+        "name": "Полный расчет (full_payment)"
+    }, {
+        "text": "Частичный расчет и кредит (partial_payment)",
+        "value": "partial_payment",
+        "name": "Частичный расчет и кредит (partial_payment)"
+    }, {
+        "text": "Кредит (credit)",
+        "value": "credit",
+        "name": "Кредит (credit)"
+    }, {
+        "text": "Выплата по кредиту (credit_payment)",
+        "value": "credit_payment",
+        "name": "Выплата по кредиту (credit_payment)"
+    }],
+    "value": "full_prepayment",
+    "lexicon": "",
+    "overridden": false,
+    "desc_trans": "Признак способа расчета",
+    "area": "",
+    "area_trans": "",
+    "menu": null
+}, {
+    "name": "ya_kassa_shipping_payment_subject",
+    "desc": "Признак предмета расчета",
+    "xtype": "list",
+    "options": [{
+        "text": "Товар (commodity)",
+        "value": "commodity",
+        "name": "Товар (commodity)"
+    }, {
+        "text": "Подакцизный товар (excise)",
+        "value": "excise",
+        "name": "Подакцизный товар (excise)"
+    }, {
+        "text": "Работа (job)",
+        "value": "job",
+        "name": "Работа (job)"
+    }, {
+        "text": "Услуга (service)",
+        "value": "service",
+        "name": "Услуга (service)"
+    }, {
+        "text": "Ставка в азартной игре (gambling_bet)",
+        "value": "gambling_bet",
+        "name": "Ставка в азартной игре (gambling_bet)"
+    }, {
+        "text": "Выигрыш в азартной игре (gambling_prize)",
+        "value": "gambling_prize",
+        "name": "Выигрыш в азартной игре (gambling_prize)"
+    }, {
+        "text": "Лотерейный билет (lottery)",
+        "value": "lottery",
+        "name": "Лотерейный билет (lottery)"
+    }, {
+        "text": "Выигрыш в лотерею (lottery_prize)",
+        "value": "lottery_prize",
+        "name": "Выигрыш в лотерею (lottery_prize)"
+    }, {
+        "text": "Результаты интеллектуальной деятельности (intellectual_activity)",
+        "value": "intellectual_activity",
+        "name": "Результаты интеллектуальной деятельности (intellectual_activity)"
+    }, {
+        "text": "Платеж (payment)",
+        "value": "payment",
+        "name": "Платеж (payment)"
+    }, {
+        "text": "Агентское вознаграждение (agent_commission)",
+        "value": "agent_commission",
+        "name": "Агентское вознаграждение (agent_commission)"
+    }, {
+        "text": "Имущественные права (property_right)",
+        "value": "property_right",
+        "name": "Имущественные права (property_right)"
+    }, {
+        "text": "Внереализационный доход (non_operating_gain)",
+        "value": "non_operating_gain",
+        "name": "Внереализационный доход (non_operating_gain)"
+    }, {
+        "text": "Страховой сбор (insurance_premium)",
+        "value": "insurance_premium",
+        "name": "Страховой сбор (insurance_premium)"
+    }, {
+        "text": "Торговый сбор (sales_tax)",
+        "value": "sales_tax",
+        "name": "Торговый сбор (sales_tax)"
+    }, {
+        "text": "Курортный сбор (resort_fee)",
+        "value": "resort_fee",
+        "name": "Курортный сбор (resort_fee)"
+    }, {
+        "text": "Несколько вариантов (composite)",
+        "value": "composite",
+        "name": "Несколько вариантов (composite)"
+    }, {
+        "text": "Другое (another)",
+        "value": "another",
+        "name": "Другое (another)"
+    }],
+    "value": "commodity",
+    "lexicon": "",
+    "overridden": false,
+    "desc_trans": "Признак предмета расчета",
+    "area": "",
+    "area_trans": "",
+    "menu": null
+}, {
+    "name": "ya_kassa_shipping_payment_mode",
+    "desc": "Признак способа расчета для доставки",
+    "xtype": "list",
+    "options": [{
+        "text": "Полная предоплата (full_prepayment)",
+        "value": "full_prepayment",
+        "name": "Полная предоплата (full_prepayment)"
+    }, {
+        "text": "Частичная предоплата (partial_prepayment)",
+        "value": "partial_prepayment",
+        "name": "Частичная предоплата (partial_prepayment)"
+    }, {
+        "text": "Аванс (advance)",
+        "value": "advance",
+        "name": "Аванс (advance)"
+    }, {
+        "text": "Полный расчет (full_payment)",
+        "value": "full_payment",
+        "name": "Полный расчет (full_payment)"
+    }, {
+        "text": "Частичный расчет и кредит (partial_payment)",
+        "value": "partial_payment",
+        "name": "Частичный расчет и кредит (partial_payment)"
+    }, {
+        "text": "Кредит (credit)",
+        "value": "credit",
+        "name": "Кредит (credit)"
+    }, {
+        "text": "Выплата по кредиту (credit_payment)",
+        "value": "credit_payment",
+        "name": "Выплата по кредиту (credit_payment)"
+    }],
+    "value": "full_prepayment",
+    "lexicon": "",
+    "overridden": false,
+    "desc_trans": "Признак способа расчета",
+    "area": "",
+    "area_trans": "",
+    "menu": null
+}, {
+    "name": "ya_kassa_send_second_receipt",
+    "desc": "Второй чек",
+    "xtype": "combo-boolean",
+    "options": [],
+    "value": true,
+    "lexicon": "",
+    "overridden": false,
+    "desc_trans": "Второй чек",
+    "area": "",
+    "area_trans": "",
+    "menu": null
+}, {
+    "name": "ya_kassa_send_second_receipt_status",
+    "desc": "Формировать второй чек при переходе заказа в статус",
+    "xtype": "list",
+    "options": [{
+        "text": "Новый",
+        "value": "0",
+        "name": "Новый"
+    }, {
+        "text": "Принят к оплате",
+        "value": "1",
+        "name": "Принят к оплате"
+    }, {
+        "text": "Отправлен",
+        "value": "2",
+        "name": "Отправлен"
+    }, {
+        "text": "Выполнен",
+        "value": "3",
+        "name": "Выполнен"
+    }, {
+        "text": "Отменен",
+        "value": "4",
+        "name": "Отменен"
+    }, {
+        "text": "Оплата получена",
+        "value": "5",
+        "name": "Оплата получена"
+    }],
+    "value": "0",
+    "lexicon": "",
+    "overridden": false,
+    "desc_trans": "Формировать второй чек при переходе заказа в статус",
+    "area": "",
+    "area_trans": "",
+    "menu": null
 }]

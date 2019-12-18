@@ -9,8 +9,12 @@
  * @package yandexmoney
  * @version 2.0.0
  */
-
+use YandexCheckout\Client;
+use YandexCheckout\Model\ConfirmationType;
 use YandexCheckout\Model\Payment;
+use YandexCheckout\Model\PaymentMethodType;
+use YandexCheckout\Request\Payments\CreatePaymentRequest;
+use YandexMoneyModule\KassaSecondReceiptModel;
 
 require_once YANDEXMONEY_PATH.'lib/autoload.php';
 
@@ -18,6 +22,8 @@ $modx->addPackage('yandexmoney', YANDEXMONEY_PATH . 'model/');
 
 class Yandexmoney
 {
+    const MODULE_VERSION = '1.1.0';
+
     /** @var int Оплата через yandex.деньги вообще не используется */
     const MODE_NONE = 0;
 
@@ -159,15 +165,15 @@ class Yandexmoney
         }
         if ($this->mode == self::MODE_KASSA) {
             if (!$this->paymode) {
-                if (in_array($this->pay_method, \YandexCheckout\Model\PaymentMethodType::getEnabledValues())) {
-                    if ($this->pay_method === \YandexCheckout\Model\PaymentMethodType::QIWI) {
+                if (in_array($this->pay_method, PaymentMethodType::getEnabledValues())) {
+                    if ($this->pay_method === PaymentMethodType::QIWI) {
                         $phone = preg_replace('/[^\d]+/', '', $this->qiwiPhone);
                         if (empty($phone)) {
                             return false;
                         }
                         $this->qiwiPhone = $phone;
                     }
-                    if ($this->pay_method === \YandexCheckout\Model\PaymentMethodType::ALFABANK) {
+                    if ($this->pay_method === PaymentMethodType::ALFABANK) {
                         $login = trim($this->alfaLogin);
                         if (empty($login)) {
                             return false;
@@ -191,19 +197,19 @@ class Yandexmoney
                 return "<option value=''>Яндекс.Касса (банковские карты, электронные деньги и другое)</option>";
             }
             $translations = array(
-                \YandexCheckout\Model\PaymentMethodType::ALFABANK => array('ab', 'Оплата через Альфа-Клик'),
-                \YandexCheckout\Model\PaymentMethodType::MOBILE_BALANCE => array('ma', 'Платеж со счета мобильного телефона'),
-                \YandexCheckout\Model\PaymentMethodType::CASH => array('cash', 'Оплата наличными через кассы и терминалы'),
-                \YandexCheckout\Model\PaymentMethodType::WEBMONEY => array('wm', 'Оплата из кошелька в системе WebMoney'),
-                \YandexCheckout\Model\PaymentMethodType::QIWI => array('qw', 'Оплата через QIWI Wallet'),
-                \YandexCheckout\Model\PaymentMethodType::SBERBANK => array('sb', 'Оплата через Сбербанк: оплата по SMS или Сбербанк Онлайн'),
-                \YandexCheckout\Model\PaymentMethodType::YANDEX_MONEY => array('ym', 'Оплата из кошелька в Яндекс.Деньгах'),
-                \YandexCheckout\Model\PaymentMethodType::BANK_CARD => array('cards', 'Оплата с произвольной банковской карты'),
-                \YandexCheckout\Model\PaymentMethodType::INSTALLMENTS => array('installments', 'Заплатить по частям'),
-                \YandexCheckout\Model\PaymentMethodType::TINKOFF_BANK => array('tinkoff_bank', 'Интернет-банк Тинькофф'),
+                PaymentMethodType::ALFABANK => array('ab', 'Оплата через Альфа-Клик'),
+                PaymentMethodType::MOBILE_BALANCE => array('ma', 'Платеж со счета мобильного телефона'),
+                PaymentMethodType::CASH => array('cash', 'Оплата наличными через кассы и терминалы'),
+                PaymentMethodType::WEBMONEY => array('wm', 'Оплата из кошелька в системе WebMoney'),
+                PaymentMethodType::QIWI => array('qw', 'Оплата через QIWI Wallet'),
+                PaymentMethodType::SBERBANK => array('sb', 'Оплата через Сбербанк: оплата по SMS или Сбербанк Онлайн'),
+                PaymentMethodType::YANDEX_MONEY => array('ym', 'Оплата из кошелька в Яндекс.Деньгах'),
+                PaymentMethodType::BANK_CARD => array('cards', 'Оплата с произвольной банковской карты'),
+                PaymentMethodType::INSTALLMENTS => array('installments', 'Заплатить по частям'),
+                PaymentMethodType::TINKOFF_BANK => array('tinkoff_bank', 'Интернет-банк Тинькофф'),
             );
             $list_methods = array();
-            foreach (\YandexCheckout\Model\PaymentMethodType::getEnabledValues() as $paymentMethodCode) {
+            foreach (PaymentMethodType::getEnabledValues() as $paymentMethodCode) {
                 $list_methods[$paymentMethodCode] = array(
                     'key'   => $translations[$paymentMethodCode][0],
                     'label' => $translations[$paymentMethodCode][1],
@@ -255,7 +261,7 @@ class Yandexmoney
         if ($this->mode == self::MODE_KASSA) {
             /** @var \YandexCheckout\Model\Confirmation\ConfirmationRedirect $confirmation */
             $confirmation = $payment->getConfirmation();
-            if ($confirmation !== null && $confirmation->getType() === \YandexCheckout\Model\ConfirmationType::REDIRECT) {
+            if ($confirmation !== null && $confirmation->getType() === ConfirmationType::REDIRECT) {
                 $redirectUrl = $confirmation->getConfirmationUrl();
             }
             $html = '<script> document.location = "' . $redirectUrl . '"; </script>';
@@ -305,7 +311,7 @@ class Yandexmoney
     private function createKassaPayment($order, $redirectUrl)
     {
         try {
-            $builder = \YandexCheckout\Request\Payments\CreatePaymentRequest::builder();
+            $builder = CreatePaymentRequest::builder();
             $builder->setClientIp($_SERVER['REMOTE_ADDR'])
                 ->setAmount($this->orderTotal)
                 ->setCapture(true)
@@ -313,20 +319,20 @@ class Yandexmoney
                 ->setMetadata(array(
                     'order_id' => $this->orderId,
                     'cms_name' => 'ya_api_modx_revolution',
-                    'module_version' => '1.0.4',
+                    'module_version' => self::MODULE_VERSION,
                 ));
             $confirmation = array(
-                'type' => \YandexCheckout\Model\ConfirmationType::REDIRECT,
+                'type' => ConfirmationType::REDIRECT,
                 'returnUrl' => $redirectUrl,
             );
             if (!$this->paymode) {
-                if ($this->pay_method === \YandexCheckout\Model\PaymentMethodType::ALFABANK) {
+                if ($this->pay_method === PaymentMethodType::ALFABANK) {
                     $paymentMethod = array(
                         'type' => $this->pay_method,
                         'login' => $this->alfaLogin,
                     );
-                    $confirmation = \YandexCheckout\Model\ConfirmationType::EXTERNAL;
-                } elseif ($this->pay_method === \YandexCheckout\Model\PaymentMethodType::QIWI) {
+                    $confirmation = ConfirmationType::EXTERNAL;
+                } elseif ($this->pay_method === PaymentMethodType::QIWI) {
                     $paymentMethod = array(
                         'type' => $this->pay_method,
                         'phone' => $this->qiwiPhone,
@@ -345,14 +351,14 @@ class Yandexmoney
                 $request->getReceipt()->normalize($request->getAmount());
             }
         } catch (\Exception $e) {
-            $this->log('error', 'Failed to create request: ' . $e->getMessage());
+            self::log('error', 'Failed to create request: ' . $e->getMessage());
             return null;
         }
 
         try {
             $response = $this->getClient()->createPayment($request);
         } catch (\Exception $e) {
-            $this->log('error', 'Failed to create payment: ' . $e->getMessage());
+            self::log('error', 'Failed to create payment: ' . $e->getMessage());
             return null;
         }
 
@@ -360,9 +366,9 @@ class Yandexmoney
 
         /** @var YandexMoneyKassaPayment $record */
         $record = $modx->getObject('YandexMoneyKassaPayment', $this->orderId);
-        $this->log('debug', 'Fetching payment from db: ' . ($record === null ? 'null' : $record->get('payment_id')));
+        self::log('debug', 'Fetching payment from db: ' . ($record === null ? 'null' : $record->get('payment_id')));
         if ($record === null) {
-            $this->log('debug', 'Create db payment');
+            self::log('debug', 'Create db payment');
             $record = $modx->newObject('YandexMoneyKassaPayment');
             $record->set('order_id', $this->orderId);
         }
@@ -381,7 +387,7 @@ class Yandexmoney
         try {
             $payment = $this->getClient()->getPaymentInfo($paymentId);
         } catch (Exception $e) {
-            $this->log('error', 'Failed to find payment ' . $paymentId);
+            self::log('error', 'Failed to find payment ' . $paymentId);
             $payment = null;
         }
         return $payment;
@@ -432,7 +438,9 @@ class Yandexmoney
         if ($content = unserialize($order->_fields['content'])) {
             foreach ($content as $item) {
                 if ($item['price'] > 0) {
-                    $builder->addReceiptItem($item['name'], $item['price'], $item['count'], $this->config['tax_id']);
+                    $builder->addReceiptItem($item['name'], $item['price'], $item['count'], $this->config['tax_id'],
+                                             $this->config['ya_kassa_payment_mode'],
+                                             $this->config['ya_kassa_payment_subject']);
                 } elseif (isset($item['tv_add']['shk_delivery'])) {
                     $shippingMethod = $item['tv_add']['shk_delivery'];
                 }
@@ -450,7 +458,9 @@ class Yandexmoney
         }
 
         if ($shippingMethod && $shippingPrice > 0) {
-            $builder->addReceiptShipping($shippingMethod, $shippingPrice, $this->config['tax_id']);
+            $builder->addReceiptShipping($shippingMethod, $shippingPrice, $this->config['tax_id'],
+                                         $this->config['ya_kassa_shipping_payment_mode'],
+                                         $this->config['ya_kassa_shipping_payment_subject']);
         }
     }
 
@@ -471,6 +481,10 @@ class Yandexmoney
         }
     }
 
+    /**
+     * @param $callbackParams
+     * @param $code
+     */
     public function sendCode($callbackParams, $code)
     {
         if (!$this->org_mode) {
@@ -487,7 +501,9 @@ class Yandexmoney
         echo $xml;
     }
 
-    /* оплачивает заказ */
+    /**
+     * оплачивает заказ
+     */
     public function ProcessResult()
     {
         $callbackParams = $_POST;
@@ -524,6 +540,93 @@ class Yandexmoney
     }
 
     /**
+     * @param SHKorder $order Инстанс заказа
+     * @param $newStatus
+     */
+    public function hookSendSecondReceipt(SHKorder $order, $newStatus)
+    {
+        $orderInfo = array(
+            'user_email' => $order->get('email'),
+            'user_phone' => $order->get('phone'),
+        );
+
+        if (!$this->isNeedSecondReceipt($newStatus)) {
+            return;
+        }
+
+        $paymentId   = $this->getPaymentIdByOrderId($order->get('id'));
+        $paymentInfo = $this->getPaymentById($paymentId);
+
+        $secondReceiptModel = new KassaSecondReceiptModel($paymentInfo, $orderInfo, $this->getClient());
+
+        if (!$secondReceiptModel->sendSecondReceipt()) {
+            return;
+        }
+
+        $sum = number_format($secondReceiptModel->getSettlementsSum(), 2, '.', ' ');
+        $this->modx->lexicon->load('yandexmoney:properties');
+        $msg = $this->modx->lexicon('second_receipt_sent', array('sum' => $sum));
+        $order->set('note', $msg);
+        $order->save();
+    }
+
+    /**
+     * Устанавливает новый статус исполнения заказа
+     * @param SHKorder $order Инстанс изменяемого заказа
+     * @param string $status Новый статус заказа
+     * @return
+     */
+    public function updateOrderStatus(SHKorder $order, $status)
+    {
+        if ($status > 0) {
+            $order->set('status', $status);
+            return $order->save();
+        }
+    }
+
+    /**
+     * @param $newStatus
+     * @return bool
+     */
+    private function isNeedSecondReceipt($newStatus)
+    {
+        $isSendReceipt       = $this->config['ya_kassa_send_check'];
+        $isSendSecondReceipt = $this->config['ya_kassa_send_second_receipt'];
+        $secondReceiptStatus = $this->config['ya_kassa_send_second_receipt_status'];
+
+        if (!$isSendReceipt) {
+            self::log('error','54 fz dont activate');
+            return false;
+        } elseif (!$isSendSecondReceipt) {
+            self::log('error','Send second receipt dont activate');
+            return false;
+        } elseif ($secondReceiptStatus != $newStatus) {
+            self::log('error','Incorrect order status, expected status = ' . $secondReceiptStatus
+                . ', current status = ' . $newStatus);
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Возвращает paymentId платежа
+     * @param $orderId
+     * @return bool | string
+     */
+    private function getPaymentIdByOrderId($orderId)
+    {
+        $sql  = 'SELECT payment_id FROM '.$this->modx->getTableName('YandexMoneyKassaPayment').' WHERE `order_id` = :orderId';
+        $stmt = $this->modx->prepare($sql);
+        $stmt->bindValue(':orderId', $orderId, \PDO::PARAM_INT);
+        $stmt->execute();
+        $dataSet = $stmt->fetch();
+        $stmt->closeCursor();
+
+        return empty($dataSet[0]) ? false : $dataSet[0];
+    }
+
+    /**
      * Преобразует шаблон назначения платежа в удобоваримую строку
      * @param string $template Шаблон назначения платежя
      * @param SHKorder $order Информация о заказе
@@ -543,34 +646,31 @@ class Yandexmoney
     }
 
     /**
-     * Устанавливает новый статус исполнения заказа
-     * @param SHKorder $order Инстанс изменяемого заказа
-     * @param string $status Новый статус заказа
+     * @return Client
      */
-    public function updateOrderStatus(SHKorder $order, $status)
-    {
-
-        if ($status > 0) {
-            $order->set('status', $status);
-            return $order->save();
-        }
-    }
-
     private function getClient()
     {
         if ($this->_apiClient === null) {
-            $this->_apiClient = new \YandexCheckout\Client();
+            $this->_apiClient = new Client();
             $this->_apiClient->setAuth($this->shopid, $this->password);
             $this->_apiClient->setLogger($this);
+
+            $modxVersion = $this->modx->getVersionData();
+
+            $userAgent = $this->_apiClient->getApiClient()->getUserAgent();
+            $userAgent->setCms("MODX Revolution", $modxVersion['full_version']);
+            $userAgent->setModule("yandex-money-cms-modx", self::MODULE_VERSION);
         }
         return $this->_apiClient;
     }
 
-    public function log($level, $message, $context = array())
+    /**
+     * @param $level
+     * @param $message
+     * @param array $context
+     */
+    public static function log($level, $message, $context = array())
     {
-        if (!$this->debug_log) {
-            return;
-        }
         if (!empty($context) && (is_array($context) || $context instanceof Traversable)) {
             $search = array();
             $replace = array();
