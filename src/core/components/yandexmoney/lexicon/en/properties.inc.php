@@ -34,6 +34,33 @@ $_lang['prop_yandexmoney.tax_twenty'] = 'tax_twenty';
 $_lang['prop_yandexmoney.tax_ten_dev'] = 'tax_ten_dev';
 $_lang['prop_yandexmoney.tax_twenty_rev'] = 'tax_twenty_rev';
 
+$_lang['prop_yandexmoney.commodity'] = 'commodity';
+$_lang['prop_yandexmoney.excise'] = 'excise';
+$_lang['prop_yandexmoney.job'] = 'job';
+$_lang['prop_yandexmoney.service'] = 'service';
+$_lang['prop_yandexmoney.gambling_bet'] = 'gambling_bet';
+$_lang['prop_yandexmoney.gambling_prize'] = 'gambling_prize';
+$_lang['prop_yandexmoney.lottery'] = 'lottery';
+$_lang['prop_yandexmoney.lottery_prize'] = 'lottery_prize';
+$_lang['prop_yandexmoney.intellectual_activity'] = 'intellectual_activity';
+$_lang['prop_yandexmoney.payment'] = 'payment';
+$_lang['prop_yandexmoney.agent_commission'] = 'agent_commission';
+$_lang['prop_yandexmoney.property_right'] = 'property_right';
+$_lang['prop_yandexmoney.non_operating_gain'] = 'non_operating_gain';
+$_lang['prop_yandexmoney.insurance_premium'] = 'insurance_premium';
+$_lang['prop_yandexmoney.sales_tax'] = 'sales_tax';
+$_lang['prop_yandexmoney.resort_fee'] = 'resort_fee';
+$_lang['prop_yandexmoney.composite'] = 'composite';
+$_lang['prop_yandexmoney.another'] = 'another';
+
+$_lang['prop_yandexmoney.full_prepayment'] = 'full_prepayment';
+$_lang['prop_yandexmoney.partial_prepayment'] = 'partial_prepayment';
+$_lang['prop_yandexmoney.advance'] = 'advance';
+$_lang['prop_yandexmoney.full_payment'] = 'full_payment';
+$_lang['prop_yandexmoney.partial_payment'] = 'partial_payment';
+$_lang['prop_yandexmoney.credit'] = 'credit';
+$_lang['prop_yandexmoney.credit_payment'] = 'credit_payment';
+
 $_lang['prop_yandexmoney.status_new'] = 'status_new';
 $_lang['prop_yandexmoney.status_payment'] = 'status_payment';
 $_lang['prop_yandexmoney.status_shipping'] = 'status_shipping';
@@ -41,4 +68,14 @@ $_lang['prop_yandexmoney.status_complete'] = 'status_complete';
 $_lang['prop_yandexmoney.status_cancelled'] = 'status_cancelled';
 $_lang['prop_yandexmoney.status_payment_complete'] = 'status_payment_complete';
 
+$_lang['prop_yandexmoney.ya_kassa_payment_mode'] = 'Признак способа расчета (payment_mode)';
+$_lang['prop_yandexmoney.ya_kassa_payment_subject'] = 'Признак предмета расчета (payment_subject)';
+$_lang['prop_yandexmoney.ya_kassa_shipping_payment_mode'] = 'Признак способа расчета (payment_mode) для доставки';
+$_lang['prop_yandexmoney.ya_kassa_shipping_payment_subject'] = 'Признак предмета расчета (payment_subject) для доставки';
+
+$_lang['prop_yandexmoney.ya_kassa_send_second_receipt_status'] = 'Формировать второй чек при переходе заказа в статус';
+$_lang['prop_yandexmoney.ya_kassa_send_second_receipt'] = 'Second receipt';
+
 $_lang['prop_yandexmoney.debug_log'] = 'debug_log';
+
+$_lang['second_receipt_sent'] = 'Second receipt sent. Amount: [[+sum]] rubles';

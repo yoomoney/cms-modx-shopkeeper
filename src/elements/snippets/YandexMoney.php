@@ -8,6 +8,7 @@ if (!defined('YANDEXMONEY_PATH')) {
 }
 require_once YANDEXMONEY_PATH.'model/yandexmoney.class.php';
 
+
 $ym = new Yandexmoney($modx, $scriptProperties);
 
 if(!empty($_SESSION['shk_lastOrder']) && !empty($_SESSION['shk_lastOrder']['id'])) {

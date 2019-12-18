@@ -1,4 +1,9 @@
 <?php
+
+use YandexCheckout\Model\Notification\NotificationFactory;
+use YandexCheckout\Model\NotificationEventType;
+use YandexCheckout\Model\PaymentStatus;
+
 require_once dirname(dirname(dirname(dirname(__FILE__)))).'/config.core.php';
 
 require_once MODX_CORE_PATH.'config/'.MODX_CONFIG_KEY.'.inc.php';
@@ -44,11 +49,11 @@ if (isset($_GET['fail']) && $_GET['fail'] == 1) {
                 $payment   = $ym->getPaymentById($paymentId);
                 if ($payment !== null) {
                     if ($payment->getPaid()) {
-                        if ($payment->getStatus() === \YandexCheckout\Model\PaymentStatus::WAITING_FOR_CAPTURE) {
+                        if ($payment->getStatus() === PaymentStatus::WAITING_FOR_CAPTURE) {
                             $ym->capturePayment($payment, false);
                         }
                         $paymentInfo = $ym->getPaymentById($paymentId);
-                        if ($paymentInfo->getStatus() == \YandexCheckout\Model\PaymentStatus::SUCCEEDED) {
+                        if ($paymentInfo->getStatus() == PaymentStatus::SUCCEEDED) {
                             $ym->updateOrderStatus($order, $config['ya_billing_status']);
                         }
                         if ($res = $modx->getObject('modResource', $config['success_page_id'])) {
@@ -87,13 +92,8 @@ if (isset($_GET['fail']) && $_GET['fail'] == 1) {
         return;
     }
     try {
-        if ($json['event'] == \YandexCheckout\Model\NotificationEventType::PAYMENT_WAITING_FOR_CAPTURE) {
-            $object = new YandexCheckout\Model\Notification\NotificationWaitingForCapture($json);
-            $ym->log('error', 'Notification waiting for capture init');
-        } else {
-            $object = new YandexCheckout\Model\Notification\NotificationSucceeded($json);
-            $ym->log('error', 'Notification succeeded init');
-        }
+        $notificationFactory = new NotificationFactory();
+        $object = $notificationFactory->factory($json);
     } catch (\Exception $e) {
         $ym->log('error', 'Invalid notification object - '.$e->getMessage());
         header('HTTP/1.1 500 Server error: '.$e->getMessage());
@@ -111,12 +111,13 @@ if (isset($_GET['fail']) && $_GET['fail'] == 1) {
         header('HTTP/1.1 500 Server error 1');
         exit();
     }
-    if ($result->getStatus() === \YandexCheckout\Model\PaymentStatus::SUCCEEDED) {
+    if ($result->getStatus() === PaymentStatus::SUCCEEDED) {
         try {
             $orderId = $object->getObject()->getMetadata()->offsetGet('order_id');
             $modx->addPackage('shopkeeper', MODX_CORE_PATH."components/shopkeeper/model/");
             $order = $modx->getObject('SHKorder', array('id' => $orderId));
             $res   = $ym->updateOrderStatus($order, $config['ya_billing_status']);
+            $ym->hookSendSecondReceipt($order, $config['ya_billing_status']);
         } catch (Exception $e) {
             $ym->log('info', var_export($e, true));
         }
@@ -124,7 +125,7 @@ if (isset($_GET['fail']) && $_GET['fail'] == 1) {
         $ym->log('info', 'Failed');
     }
 
-    echo json_encode(array('success' => ($result->getStatus() === \YandexCheckout\Model\PaymentStatus::SUCCEEDED)));
+    echo json_encode(array('success' => ($result->getStatus() === PaymentStatus::SUCCEEDED)));
     exit();
 }
 
