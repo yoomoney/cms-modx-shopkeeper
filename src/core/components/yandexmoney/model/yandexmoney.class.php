@@ -22,7 +22,7 @@ $modx->addPackage('yandexmoney', YANDEXMONEY_PATH . 'model/');
 
 class Yandexmoney
 {
-    const MODULE_VERSION = '1.1.0';
+    const MODULE_VERSION = '1.2.0';
 
     /** @var int Оплата через yandex.деньги вообще не используется */
     const MODE_NONE = 0;
