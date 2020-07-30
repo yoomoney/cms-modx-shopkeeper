@@ -3,7 +3,7 @@
 $_lang['prop_yandexmoney.ya_billing_id'] = 'ID формы';
 $_lang['prop_yandexmoney.ya_billing_purpose'] = 'Назначение платежа';
 $_lang['prop_yandexmoney.ya_billing_status'] = 'Статус заказа';
-$_lang['prop_yandexmoney.ya_billing_purpose_default'] = 'Номер заказа %order_id% Оплата через Яндекс.Платежку';
+$_lang['prop_yandexmoney.ya_billing_purpose_default'] = 'Номер заказа %order_id% Оплата через Платежку';
 
 $_lang['prop_yandexmoney.description_template'] = 'Описание платежа';
 $_lang['prop_yandexmoney.account'] = 'Номер кошелька Яндекс (для физлиц)';
@@ -26,7 +26,7 @@ $_lang['prop_yandexmoney.ya_kassa_send_check'] = 'Отправлять в Янд
 $_lang['prop_yandexmoney.mode_private_persone'] = 'Физическое лицо';
 $_lang['prop_yandexmoney.mode_org'] = 'Юридическое лицо (выбор способа оплаты на стороне магазина)';
 $_lang['prop_yandexmoney.mode_org_remote'] = 'Юридическое лицо (выбор способа оплаты на стороне Яндекс.Кассы)';
-$_lang['prop_yandexmoney.mode_billing'] = 'Яндекс.Платежка (банковские карты, кошелек)';
+$_lang['prop_yandexmoney.mode_billing'] = 'Платежка (банковские карты, кошелек)';
 
 $_lang['prop_yandexmoney.tax_without_tax'] = 'Без НДС';
 $_lang['prop_yandexmoney.tax_zero'] = '0%';
