@@ -22,7 +22,7 @@ $modx->addPackage('yandexmoney', YANDEXMONEY_PATH . 'model/');
 
 class Yandexmoney
 {
-    const MODULE_VERSION = '1.2.0';
+    const MODULE_VERSION = '1.2.1';
 
     /** @var int Оплата через yandex.деньги вообще не используется */
     const MODE_NONE = 0;
@@ -229,7 +229,7 @@ class Yandexmoney
             }
             return $output;
         } elseif ($this->mode == self::MODE_BILLING) {
-            return "<option value='4'>Яндекс.Платежка (банковские карты, кошелек)</option>";
+            return "<option value='4'>Платежка (банковские карты, кошелек)</option>";
         }
         return $result;
     }

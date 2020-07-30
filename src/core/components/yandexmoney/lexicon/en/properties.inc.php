@@ -1,9 +1,9 @@
 <?php
 
-$_lang['prop_yandexmoney.ya_billing_id'] = 'Yandex.Billing\'s identifier';
+$_lang['prop_yandexmoney.ya_billing_id'] = 'Billing\'s identifier';
 $_lang['prop_yandexmoney.ya_billing_purpose'] = 'Payment purpose';
 $_lang['prop_yandexmoney.ya_billing_status'] = 'Order status';
-$_lang['prop_yandexmoney.ya_billing_purpose_default'] = 'Order No. %order_is% Payment via Yandex.Billing';
+$_lang['prop_yandexmoney.ya_billing_purpose_default'] = 'Order No. %order_is% Payment via Billing';
 
 $_lang['prop_yandexmoney.account'] = 'account';
 $_lang['prop_yandexmoney.fail_page_id'] = 'fail_page_id';
