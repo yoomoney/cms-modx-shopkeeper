@@ -1,29 +1,29 @@
 Инструкция для работы с модулем.
 
 После установки модуля необходимо:
-1. В чанке формы заказа, в списке способов оплаты указать [[!YandexMoney?&action=`showMethods`]]
+1. В чанке формы заказа, в списке способов оплаты указать [[!YooMoney?&action=`showMethods`]]
 Т.е., например, в чанке shopOrderForm будет:
 ```
 <select name="payment" style="width:200px;">
     <option value="При получении" [[!+fi.payment:FormItIsSelected=`При получении`]]>При получении</option>
-    [[!YandexMoney? &action=`showMethods` ]]
+    [[!YooMoney? &action=`showMethods` ]]
 </select>
 ```
-Так же, если используется оплата с помощью Яндекс.Платёжки или с помощью Яндекс.Кассы с использованием Альфа-Клика или Киви,
-необходимо добавить в чанк оформления платежа чанк [[$YandexMoney]]
+Так же, если используется оплата с помощью ЮKassa с использованием Альфа-Клика или Киви,
+необходимо добавить в чанк оформления платежа чанк [[$YooMoney]]
 Т.е., например, в чанке shopOrderForm будет:
 ```
 <select name="payment" style="width:200px;">
     <option value="При получении" [[!+fi.payment:FormItIsSelected=`При получении`]]>При получении</option>
-        [[!YandexMoney? &action=`showMethods` ]]
+        [[!YooMoney? &action=`showMethods` ]]
 </select>
-[[$YandexMoney]]
+[[$YooMoney]]
 ```
-2. В чанке страницы заказа, в список хуков FormIt добавить YandexMoneyHook
+2. В чанке страницы заказа, в список хуков FormIt добавить YooMoneyHook
 Т.е., например, чанк orderform_page
 ```
 [[!FormIt?
-&hooks=`spam,shk_fihook,YandexMoneyHook,email,FormItAutoResponder,redirect`
+&hooks=`spam,shk_fihook,YooMoneyHook,email,FormItAutoResponder,redirect`
 &submitVar=`order`
 &emailTpl=`shopOrderReport`
 &fiarTpl=`shopOrderReport`
@@ -35,8 +35,8 @@
 &errTpl=`<br /><span class="error">[[+error]]</span>`
 ]]
 ```
-3. Создать 2 страницы: для успешно завершенного платежа и неуспешно завершенного. Указать их ID документа в параметрах сниппета YandexMoney. 
+3. Создать 2 страницы: для успешно завершенного платежа и неуспешно завершенного. Указать их ID документа в параметрах сниппета YooMoney. 
 
-4. Указать настройки магазина в параметрах сниппета YandexMoney.
+4. Указать настройки магазина в параметрах сниппета YooMoney.
 
-5. Для Яндекс.Кассы URL нотификации будет `https://<имя вашего домена>/assets/components/yandexmoney/connector_result.php?notification=1`
+5. Для ЮKassa URL нотификации будет `https://<имя вашего домена>/assets/components/yoomoney/connector_result.php?notification=1`
