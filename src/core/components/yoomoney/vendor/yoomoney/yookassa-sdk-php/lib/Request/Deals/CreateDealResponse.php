@@ -24,19 +24,12 @@
  * THE SOFTWARE.
  */
 
-namespace YooKassa\Model\Confirmation;
-
-use YooKassa\Model\ConfirmationType;
+namespace YooKassa\Request\Deals;
 
 /**
- * Сценарий при котором необходимо направить плательщика в приложение партнера
+ * Класс объекта ответа возвращаемого API при запросе на создание сделки
  *
- * @package YooKassa\Model\Confirmation
+ * @package YooKassa
  */
-class ConfirmationDeepLink extends AbstractConfirmation
-{
-    public function __construct()
-    {
-        $this->_setType(ConfirmationType::DEEPLINK);
-    }
-}
+class CreateDealResponse extends AbstractDealResponse
+{}

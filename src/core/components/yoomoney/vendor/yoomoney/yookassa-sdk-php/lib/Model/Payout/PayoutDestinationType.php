@@ -24,19 +24,22 @@
  * THE SOFTWARE.
  */
 
-namespace YooKassa\Model\ConfirmationAttributes;
+namespace YooKassa\Model\Payout;
 
-use YooKassa\Model\ConfirmationType;
+use YooKassa\Common\AbstractEnum;
+use YooKassa\Model\PaymentMethodType;
 
 /**
- * Сценарий при котором необходимо направить плательщика в приложение партнера
- *
- * @package YooKassa\Model\ConfirmationAttributes
+ * PayoutDestinationType - Виды выплат
+ * |Код|Описание|
+ * --- | ---
+ * |yoo_money|Выплата в кошелек ЮMoney|
+ * |bank_card|Выплата на произвольную банковскую карту|
  */
-class ConfirmationAttributesDeepLink extends AbstractConfirmationAttributes
+class PayoutDestinationType extends AbstractEnum
 {
-    public function __construct()
-    {
-        $this->_setType(ConfirmationType::DEEPLINK);
-    }
+    protected static $validValues = array(
+        PaymentMethodType::YOO_MONEY => true,
+        PaymentMethodType::BANK_CARD => true,
+    );
 }

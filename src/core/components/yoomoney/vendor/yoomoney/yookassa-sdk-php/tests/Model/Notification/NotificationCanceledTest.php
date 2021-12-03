@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Tests\Model\Notification;
+namespace Tests\YooKassa\Model\Notification;
 
 use YooKassa\Helpers\Random;
 use YooKassa\Model\ConfirmationType;
@@ -12,6 +12,7 @@ use YooKassa\Model\NotificationType;
 use YooKassa\Model\PaymentInterface;
 use YooKassa\Model\PaymentMethodType;
 use YooKassa\Model\PaymentStatus;
+use YooKassa\Model\Receipt\SettlementType;
 use YooKassa\Model\ReceiptRegistrationStatus;
 
 class NotificationCanceledTest extends \PHPUnit_Framework_TestCase
@@ -53,6 +54,16 @@ class NotificationCanceledTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @dataProvider invalidDataProvider
+     * @param array $options
+     * @expectedException \InvalidArgumentException
+     */
+    public function testInvalidFromArray($options)
+    {
+        $this->getTestInstance($options);
+    }
+
+    /**
      * @return array
      * @throws \Exception
      */
@@ -89,8 +100,8 @@ class NotificationCanceledTest extends \PHPUnit_Framework_TestCase
                 'payment_method' => array(
                     'type' => PaymentMethodType::QIWI,
                 ),
-                'created_at' => date(DATE_ATOM, Random::int(1, time())),
-                'captured_at' => date(DATE_ATOM, Random::int(1, time())),
+                'created_at' => date(YOOKASSA_DATE, Random::int(1, time())),
+                'captured_at' => date(YOOKASSA_DATE, Random::int(1, time())),
                 'confirmation' => Random::value($confirmations),
                 'refunded' => array(
                     'value' => Random::float(0.01, 1000000.0),
@@ -113,5 +124,26 @@ class NotificationCanceledTest extends \PHPUnit_Framework_TestCase
             );
         }
         return $result;
+    }
+
+    public function invalidDataProvider()
+    {
+        return array(
+            array(
+                array(
+                    'type' => SettlementType::PREPAYMENT
+                )
+            ),
+            array(
+                array(
+                    'event' => SettlementType::PREPAYMENT
+                )
+            ),
+            array(
+                array(
+                    'object' => array()
+                )
+            )
+        );
     }
 }

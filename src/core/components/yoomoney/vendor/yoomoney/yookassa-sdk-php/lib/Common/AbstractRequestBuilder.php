@@ -32,12 +32,13 @@ use YooKassa\Common\Exceptions\InvalidRequestException;
 /**
  * Базовый класс билдера запросов
  *
- * @package YooKassa\Common
+ * @package YooKassa
  */
 abstract class AbstractRequestBuilder
 {
     /**
-     * @var AbstractRequest Инстанс собираемого запроса
+     * Инстанс собираемого запроса
+     * @var AbstractRequest
      */
     protected $currentObject;
 
@@ -51,7 +52,7 @@ abstract class AbstractRequestBuilder
 
     /**
      * Инициализирует пустой запрос
-     * @return AbstractRequest Инстанс запроса который будем собирать
+     * @return AbstractRequest Инстанс запроса, который будем собирать
      */
     abstract protected function initCurrentObject();
 
@@ -61,8 +62,7 @@ abstract class AbstractRequestBuilder
      * @return AbstractRequest Инстанс собранного запроса
      *
      * @throws InvalidRequestException Выбрасывается если при валидации запроса произошла ошибка
-     * @throws InvalidPropertyException Выбрасывается если не удалось установить один из параметров, переданныч в
-     * массиве настроек
+     * @throws InvalidPropertyException Выбрасывается если не удалось установить один из параметров, переданных в массиве настроек
      */
     public function build(array $options = null)
     {

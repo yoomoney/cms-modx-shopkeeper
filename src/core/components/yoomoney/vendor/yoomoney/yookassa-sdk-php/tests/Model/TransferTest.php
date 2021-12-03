@@ -37,6 +37,8 @@ class TransferTest extends TestCase
         self::assertNull($instance->platform_fee_amount);
         self::assertNull($instance->accountId);
         self::assertNull($instance->status);
+        self::assertNull($instance->metadata);
+        self::assertFalse($instance->hasAmount());
 
         $instance->fromArray($value);
 
@@ -48,8 +50,14 @@ class TransferTest extends TestCase
         self::assertSame($value['platform_fee_amount'], $instance->platform_fee_amount->jsonSerialize());
         self::assertSame($value['status'], $instance->getStatus());
         self::assertSame($value['status'], $instance->status);
+        if (!empty($value['metadata'])) {
+            self::assertSame($value['metadata'], $instance->getMetadata()->toArray());
+            self::assertSame($value['metadata'], $instance->metadata->toArray());
 
-        self::assertSame($value, $instance->jsonSerialize());
+            self::assertSame($value, $instance->jsonSerialize());
+        }
+
+        self::assertTrue($instance instanceof Transfer);
     }
 
     /**
@@ -87,7 +95,23 @@ class TransferTest extends TestCase
      */
     public function validDataProvider()
     {
-        $result = array();
+        $result = array(
+            array(
+
+                    'account_id' => '123',
+                    'amount' => array(
+                        'value' => '10.00',
+                        'currency' => 'RUB'
+                    ),
+                    'platform_fee_amount' => array(
+                        'value' => '10.00',
+                        'currency' => 'RUB'
+                    ),
+                    'status' => TransferStatus::PENDING,
+                    'metadata' => null
+
+            )
+        );
         for ($i = 0; $i < 10; $i++) {
             $result[] = array(
                 'account_id' => (string)Random::int(11111111, 99999999),
@@ -99,7 +123,10 @@ class TransferTest extends TestCase
                     'value' => sprintf('%.2f', round(Random::float(0.1, 99.99), 2)),
                     'currency' => Random::value(CurrencyCode::getValidValues())
                 ),
-                'status' => Random::value(TransferStatus::getValidValues())
+                'status' => Random::value(TransferStatus::getValidValues()),
+                'metadata' => array(
+                    Random::str(2, 16) => Random::str(2, 512),
+                )
             );
         }
         return array($result);
@@ -127,6 +154,19 @@ class TransferTest extends TestCase
     public function testSetterInvalidAccountId($value)
     {
         $this->getTestInstance()->accountId = $value;
+    }
+
+    /**
+     * @dataProvider invalidMetadataProvider
+     *
+     * @expectedException \InvalidArgumentException
+     *
+     * @param $value
+     */
+    public function testInvalidMetadata($value)
+    {
+        $instance = $this->getTestInstance();
+        $instance->setMetadata($value);
     }
 
     /**
@@ -357,6 +397,17 @@ class TransferTest extends TestCase
             array(null),
             array(''),
             array(Random::str(15, 100)),
+            array(new \stdClass()),
+        );
+    }
+
+    /**
+     * @return array
+     * @throws \Exception
+     */
+    public function invalidMetadataProvider()
+    {
+        return array(
             array(new \stdClass()),
         );
     }

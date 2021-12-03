@@ -32,7 +32,7 @@ use YooKassa\Model\SupplierInterface;
 /**
  * Interface ReceiptItemInterface
  *
- * @package YooKassa\Model
+ * @package YooKassa
  *
  * @property-read string $description Название товара (не более 128 символов).
  * @property-read float $quantity Количество товара. Максимально возможное значение зависит от модели вашей онлайн-кассы.
@@ -69,7 +69,7 @@ interface ReceiptResponseItemInterface
 
     /**
      * Возвращает ставку НДС
-     * @return int|null Ставка НДС, число 1-6, или null если ставка не задана
+     * @return int|null Ставка НДС, число 1-6, или null, если ставка не задана
      */
     function getVatCode();
 

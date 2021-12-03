@@ -33,7 +33,7 @@ use YooKassa\Model\SourceInterface;
 /**
  * Класс сериалайзера запросов к API на создание нового возврата средств
  *
- * @package YooKassa\Request\Refunds
+ * @package YooKassa
  */
 class CreateRefundRequestSerializer
 {
@@ -100,6 +100,10 @@ class CreateRefundRequestSerializer
             $result['sources'] = $this->serializeSources($request->getSources());
         }
 
+        if ($request->hasDeal()) {
+            $result['deal'] = $request->getDeal()->toArray();
+        }
+
         return $result;
     }
 
@@ -117,11 +121,10 @@ class CreateRefundRequestSerializer
     }
 
     /**
-     * @param SourceInterface[] $transfers
-     *
+     * @param array $sources
      * @return array
      */
-    private function serializeSources(array $sources)
+    private function serializeSources($sources)
     {
         $result = array();
         foreach ($sources as $source) {
