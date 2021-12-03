@@ -7,7 +7,7 @@
  *
  * @author YooMoney
  * @package yoomoney
- * @version 2.0.1
+ * @version 2.0.2
  */
 use YooKassa\Client;
 use YooKassa\Model\ConfirmationType;
@@ -22,7 +22,7 @@ $modx->addPackage('yoomoney', YOOMONEY_PATH . 'model/');
 
 class Yoomoney
 {
-    const MODULE_VERSION = '2.0.1';
+    const MODULE_VERSION = '2.0.2';
 
     /** @var int Оплата через ЮMoney вообще не используется */
     const MODE_NONE = 0;

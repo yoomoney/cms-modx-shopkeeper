@@ -5,14 +5,19 @@ namespace Tests\YooKassa\Request\Payments;
 use PHPUnit\Framework\TestCase;
 use YooKassa\Helpers\Random;
 use YooKassa\Model\ConfirmationAttributes\ConfirmationAttributesExternal;
+use YooKassa\Model\ConfirmationType;
 use YooKassa\Model\CurrencyCode;
+use YooKassa\Model\Deal\PaymentDealInfo;
+use YooKassa\Model\Locale;
 use YooKassa\Model\Metadata;
 use YooKassa\Model\MonetaryAmount;
+use YooKassa\Model\Payment;
 use YooKassa\Model\PaymentData\PaymentDataQiwi;
 use YooKassa\Model\Receipt;
 use YooKassa\Model\ReceiptItem;
 use YooKassa\Model\Recipient;
 use YooKassa\Model\Transfer;
+use YooKassa\Model\TransferStatus;
 use YooKassa\Request\Payments\CreatePaymentRequest;
 use YooKassa\Request\Payments\CreatePaymentRequestBuilder;
 
@@ -347,8 +352,13 @@ class CreatePaymentRequestTest extends TestCase
             self::assertNull($instance->confirmation);
         } else {
             self::assertTrue($instance->hasConfirmation());
-            self::assertSame($options['confirmation'], $instance->getConfirmation());
-            self::assertSame($options['confirmation'], $instance->confirmation);
+            if (is_array($options['confirmation'])) {
+                self::assertSame($options['confirmation'], $instance->getConfirmation()->toArray());
+                self::assertSame($options['confirmation'], $instance->confirmation->toArray());
+            } else {
+                self::assertSame($options['confirmation'], $instance->getConfirmation());
+                self::assertSame($options['confirmation'], $instance->confirmation);
+            }
         }
 
         $instance->setConfirmation(null);
@@ -363,8 +373,13 @@ class CreatePaymentRequestTest extends TestCase
             self::assertNull($instance->confirmation);
         } else {
             self::assertTrue($instance->hasConfirmation());
-            self::assertSame($options['confirmation'], $instance->getConfirmation());
-            self::assertSame($options['confirmation'], $instance->confirmation);
+            if (is_array($options['confirmation'])) {
+                self::assertSame($options['confirmation'], $instance->getConfirmation()->toArray());
+                self::assertSame($options['confirmation'], $instance->confirmation->toArray());
+            } else {
+                self::assertSame($options['confirmation'], $instance->getConfirmation());
+                self::assertSame($options['confirmation'], $instance->confirmation);
+            }
         }
     }
 
@@ -543,6 +558,74 @@ class CreatePaymentRequestTest extends TestCase
     }
 
     /**
+     * @dataProvider validDataProvider
+     * @param $options
+     */
+    public function testMerchantCustomerId($options)
+    {
+        $instance = new CreatePaymentRequest();
+
+        self::assertFalse($instance->hasMerchantCustomerId());
+        self::assertNull($instance->getMerchantCustomerId());
+        self::assertNull($instance->merchantCustomerId);
+        self::assertNull($instance->merchant_customer_id);
+
+        $instance->setMerchantCustomerId($options['merchant_customer_id']);
+        if (empty($options['merchant_customer_id'])) {
+            self::assertFalse($instance->hasMerchantCustomerId());
+            self::assertNull($instance->getMerchantCustomerId());
+            self::assertNull($instance->merchantCustomerId);
+            self::assertNull($instance->merchant_customer_id);
+        } else {
+            self::assertTrue($instance->hasMerchantCustomerId());
+            self::assertSame($options['merchant_customer_id'], $instance->getMerchantCustomerId());
+            self::assertSame($options['merchant_customer_id'], $instance->merchantCustomerId);
+            self::assertSame($options['merchant_customer_id'], $instance->merchant_customer_id);
+        }
+
+        $instance->setMerchantCustomerId(null);
+        self::assertFalse($instance->hasMerchantCustomerId());
+        self::assertNull($instance->getMerchantCustomerId());
+        self::assertNull($instance->merchantCustomerId);
+        self::assertNull($instance->merchant_customer_id);
+
+        $instance->merchant_customer_id = $options['merchant_customer_id'];
+        if (empty($options['merchant_customer_id'])) {
+            self::assertFalse($instance->hasMerchantCustomerId());
+            self::assertNull($instance->getMerchantCustomerId());
+            self::assertNull($instance->merchantCustomerId);
+            self::assertNull($instance->merchant_customer_id);
+        } else {
+            self::assertTrue($instance->hasMerchantCustomerId());
+            self::assertSame($options['merchant_customer_id'], $instance->getMerchantCustomerId());
+            self::assertSame($options['merchant_customer_id'], $instance->merchantCustomerId);
+            self::assertSame($options['merchant_customer_id'], $instance->merchant_customer_id);
+        }
+    }
+
+    /**
+     * @dataProvider invalidMerchantCustomerIdDataProvider
+     * @expectedException \InvalidArgumentException
+     * @param $value
+     */
+    public function testSetInvalidMerchantCustomerId($value)
+    {
+        $instance = new CreatePaymentRequest();
+        $instance->setMerchantCustomerId($value);
+    }
+
+    public function invalidMerchantCustomerIdDataProvider()
+    {
+        return array(
+            array(array()),
+            array(new \stdClass()),
+            array(true),
+            array(false),
+            array(Random::str(Payment::MAX_LENGTH_MERCHANT_CUSTOMER_ID + 1)),
+        );
+    }
+
+    /**
      * @dataProvider validTransfers
      * @param $value
      */
@@ -562,6 +645,8 @@ class CreatePaymentRequestTest extends TestCase
      */
     public function validTransfers()
     {
+        $metadata = new Metadata();
+        $metadata->test = 'test';
         $transfers = array();
         for($i = 0; $i < 10; $i++) {
             $transfers[$i][] = array(
@@ -570,10 +655,12 @@ class CreatePaymentRequestTest extends TestCase
                     'value' => sprintf('%.2f', round(Random::float(0.1, 99.99), 2)),
                     'currency' => Random::value(CurrencyCode::getValidValues())
                 ),
+                'status' => Random::value(TransferStatus::getValidValues()),
                 'platform_fee_amount' => array(
                     'value' => sprintf('%.2f', round(Random::float(0.1, 99.99), 2)),
                     'currency' => Random::value(CurrencyCode::getValidValues())
-                )
+                ),
+                'metadata' => $i == 0 ? $metadata : array('test' => 'test'),
             );
         }
         $transfers[$i][] = array(new Transfer($transfers[0]));
@@ -623,6 +710,51 @@ class CreatePaymentRequestTest extends TestCase
             self::assertTrue($instance->hasMetadata());
             self::assertSame($expected, $instance->getMetadata()->toArray());
             self::assertSame($expected, $instance->metadata->toArray());
+        }
+    }
+
+    /**
+     * @dataProvider validDataProvider
+     * @param $options
+     */
+    public function testDeal($options)
+    {
+        $instance = new CreatePaymentRequest();
+
+        self::assertFalse($instance->hasDeal());
+        self::assertNull($instance->getDeal());
+        self::assertNull($instance->deal);
+
+        $expected = $options['deal'];
+        if ($expected instanceof PaymentDealInfo) {
+            $expected = $expected->toArray();
+        }
+
+        $instance->setDeal($options['deal']);
+        if (empty($options['deal'])) {
+            self::assertFalse($instance->hasDeal());
+            self::assertNull($instance->getDeal());
+            self::assertNull($instance->deal);
+        } else {
+            self::assertTrue($instance->hasDeal());
+            self::assertSame($expected, $instance->getDeal()->toArray());
+            self::assertSame($expected, $instance->deal->toArray());
+        }
+
+        $instance->setDeal(null);
+        self::assertFalse($instance->hasDeal());
+        self::assertNull($instance->getDeal());
+        self::assertNull($instance->deal);
+
+        $instance->deal = $options['deal'];
+        if (empty($options['deal'])) {
+            self::assertFalse($instance->hasDeal());
+            self::assertNull($instance->getDeal());
+            self::assertNull($instance->deal);
+        } else {
+            self::assertTrue($instance->hasDeal());
+            self::assertSame($expected, $instance->getDeal()->toArray());
+            self::assertSame($expected, $instance->deal->toArray());
         }
     }
 
@@ -694,6 +826,17 @@ class CreatePaymentRequestTest extends TestCase
         $instance->setMetadata($value);
     }
 
+    /**
+     * @dataProvider invalidMetadataDataProvider
+     * @expectedException \InvalidArgumentException
+     * @param $value
+     */
+    public function testSetInvalidDeal($value)
+    {
+        $instance = new CreatePaymentRequest();
+        $instance->setDeal($value);
+    }
+
     public function validDataProvider()
     {
         $metadata = new Metadata();
@@ -712,6 +855,8 @@ class CreatePaymentRequestTest extends TestCase
                     'capture' => null,
                     'clientIp' => null,
                     'metadata' => null,
+                    'deal' => null,
+                    'merchant_customer_id' => null,
                 ),
             ),
             array(
@@ -727,6 +872,11 @@ class CreatePaymentRequestTest extends TestCase
                     'capture' => '',
                     'clientIp' => '',
                     'metadata' => array(),
+                    'deal' => new PaymentDealInfo(array(
+                        'id' => Random::str(36, 50),
+                        'settlements' => array()
+                    )),
+                    'merchant_customer_id' => '',
                 ),
             ),
         );
@@ -739,13 +889,74 @@ class CreatePaymentRequestTest extends TestCase
                 'paymentMethodId' => uniqid(),
                 'paymentMethodData' => new PaymentDataQiwi(),
                 'confirmation' => new ConfirmationAttributesExternal(),
-                'savePaymentMethod' => mt_rand(0, 1) ? true : false,
-                'capture' => mt_rand(0, 1) ? true : false,
+                'savePaymentMethod' => Random::bool(),
+                'capture' => Random::bool(),
                 'clientIp' => long2ip(mt_rand(0, pow(2, 32))),
                 'metadata' => $i == 0 ? $metadata : array('test' => 'test'),
+                'transfers' => array(
+                    array(
+                        'account_id' => (string)Random::int(11111111, 99999999),
+                        'amount' => array(
+                            'value' => sprintf('%.2f', round(Random::float(0.1, 99.99), 2)),
+                            'currency' => Random::value(CurrencyCode::getValidValues())
+                        ),
+                        'status' => Random::value(TransferStatus::getValidValues()),
+                        'platform_fee_amount' => array(
+                            'value' => sprintf('%.2f', round(Random::float(0.1, 99.99), 2)),
+                            'currency' => Random::value(CurrencyCode::getValidValues())
+                        ),
+                        'metadata' => $i == 0 ? $metadata : array('test' => 'test'),
+                    )
+                ),
+                'deal' => array(
+                    'id' => Random::str(36, 50),
+                    'settlements' => array()
+                ),
+                'merchant_customer_id' => Random::str(36, 50),
             );
             $result[] = array($request);
         }
+
+        $result[] = array(
+            array(
+                'recipient' => new Recipient(),
+                'amount' => new MonetaryAmount(Random::int(1, 1000000)),
+                'referenceId' => uniqid(),
+                'paymentToken' => uniqid(),
+                'paymentMethodId' => uniqid(),
+                'paymentMethodData' => new PaymentDataQiwi(),
+                'confirmation' => array(
+                    'return_url' => Random::str(10),
+                    'type' => ConfirmationType::MOBILE_APPLICATION,
+                    'locale' => Locale::RUSSIAN,
+                ),
+                'savePaymentMethod' => Random::bool(),
+                'capture' => Random::bool(),
+                'clientIp' => long2ip(mt_rand(0, pow(2, 32))),
+                'metadata' => $i == 0 ? $metadata : array('test' => 'test'),
+                'transfers' => array(
+                    array(
+                        'account_id' => (string)Random::int(11111111, 99999999),
+                        'amount' => array(
+                            'value' => sprintf('%.2f', round(Random::float(0.1, 99.99), 2)),
+                            'currency' => Random::value(CurrencyCode::getValidValues())
+                        ),
+                        'status' => Random::value(TransferStatus::getValidValues()),
+                        'platform_fee_amount' => array(
+                            'value' => sprintf('%.2f', round(Random::float(0.1, 99.99), 2)),
+                            'currency' => Random::value(CurrencyCode::getValidValues())
+                        ),
+                        'metadata' => $i == 0 ? $metadata : array('test' => 'test'),
+                    )
+                ),
+                'deal' => array(
+                    'id' => Random::str(36, 50),
+                    'settlements' => array()
+                ),
+                'merchant_customer_id' => Random::str(36, 50),
+            )
+        );
+
         return $result;
     }
 

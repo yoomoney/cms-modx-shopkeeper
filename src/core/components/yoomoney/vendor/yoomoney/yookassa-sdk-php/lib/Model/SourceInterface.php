@@ -29,11 +29,11 @@ namespace YooKassa\Model;
 /**
  * Interface TransferInterface
  *
- * @package YooKassa\Model
+ * @property AmountInterface $amount Сумма возврата
+ * @property AmountInterface $platform_fee_amount Комиссия, которую вы удержали при оплате, и хотите вернуть
+ * @property string $accountId Идентификатор магазина, для которого вы хотите провести возврат
  *
- * @property AmountInterface $amount
- * @property AmountInterface $platform_fee_amount
- * @property string $accountId
+ * @package YooKassa
  */
 interface SourceInterface
 {
@@ -61,7 +61,7 @@ interface SourceInterface
     public function getAmount();
 
     /**
-     * Проверяет была ли установлена сумма оплаты
+     * Проверяет, была ли установлена сумма оплаты
      *
      * @return bool True если сумма оплаты была установлена, false если нет
      */
@@ -81,7 +81,7 @@ interface SourceInterface
     public function getPlatformFeeAmount();
 
     /**
-     * Проверяет была ли установлена комиссия за проданные товары и услуги, которая удерживается с магазина в вашу пользу
+     * Проверяет, была ли установлена комиссия за проданные товары и услуги, которая удерживается с магазина в вашу пользу
      *
      * @return bool True если комиссия была установлена, false если нет
      */

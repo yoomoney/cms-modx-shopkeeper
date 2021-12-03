@@ -38,9 +38,9 @@ use YooKassa\Model\Supplier;
 use YooKassa\Model\SupplierInterface;
 
 /**
- * Interface ReceiptItemInterface
+ * Класс, описывающий товар в чеке
  *
- * @package YooKassa\Model
+ * @package YooKassa
  *
  * @property string $description Название товара (не более 128 символов).
  * @property float $quantity Количество товара. Максимально возможное значение зависит от модели вашей онлайн-кассы.
@@ -91,11 +91,11 @@ class ReceiptResponseItem extends AbstractObject implements ReceiptResponseItemI
     private $_supplier;
 
     /**
-     * Конструктор, устанавливает настройки товара из ассоциативного массива
+     * Устанавливает значения свойств текущего объекта из массива
      *
      * @param array $itemData Массив с информацией о товаре, пришедший от API
      */
-    public function __construct($itemData)
+    public function fromArray($itemData)
     {
         $this->setDescription($itemData['description']);
         $this->setQuantity($itemData['quantity']);
@@ -219,7 +219,7 @@ class ReceiptResponseItem extends AbstractObject implements ReceiptResponseItemI
 
     /**
      * Возвращает ставку НДС
-     * @return int|null Ставка НДС, число 1-6, или null если ставка не задана
+     * @return int|null Ставка НДС, число 1-6, или null, если ставка не задана
      */
     public function getVatCode()
     {
@@ -357,31 +357,5 @@ class ReceiptResponseItem extends AbstractObject implements ReceiptResponseItemI
         }
 
         return $amount;
-    }
-
-    /**
-     * @return array
-     */
-    public function jsonSerialize()
-    {
-        $result = array(
-            'description'     => $this->getDescription(),
-            'amount'          => array(
-                'value'    => $this->getPrice()->getValue(),
-                'currency' => $this->getPrice()->getCurrency(),
-            ),
-            'quantity'        => $this->getQuantity(),
-            'vat_code'        => $this->getVatCode(),
-        );
-
-        if ($this->getPaymentSubject()) {
-            $result['payment_subject'] = $this->getPaymentSubject();
-        }
-
-        if ($this->getPaymentMode()) {
-            $result['payment_mode'] = $this->getPaymentMode();
-        }
-
-        return $result;
     }
 }

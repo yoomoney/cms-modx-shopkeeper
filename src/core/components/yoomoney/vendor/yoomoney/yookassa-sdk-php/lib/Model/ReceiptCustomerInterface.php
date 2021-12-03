@@ -29,7 +29,7 @@ namespace YooKassa\Model;
 /**
  * Interface ReceiptCustomerInterface
  *
- * @package YooKassa\Model
+ * @package YooKassa
  *
  * @property-read string $fullName Для юрлица — название организации, для ИП и физического лица — ФИО.
  * @property-read string $full_name Для юрлица — название организации, для ИП и физического лица — ФИО.
@@ -42,7 +42,7 @@ interface ReceiptCustomerInterface
     /**
      * Возвращает название организации или ФИО физического лица
      *
-     * @return string название организации или ФИО физического лица
+     * @return string Название организации или ФИО физического лица
      */
     function getFullName();
 

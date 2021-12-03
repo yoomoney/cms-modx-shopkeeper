@@ -29,6 +29,13 @@ namespace YooKassa\Model\Notification;
 use YooKassa\Model\Notification\AbstractNotification;
 use YooKassa\Model\NotificationEventType;
 
+/**
+ * Фабрика для получения конкретного объекта уведомления.
+ *
+ * @example 03-notification.php 3 Пример скрипта обработки уведомления
+ *
+ * @package YooKassa
+ */
 class NotificationFactory
 {
     private $typeClassMap = array(
@@ -36,6 +43,10 @@ class NotificationFactory
         NotificationEventType::REFUND_SUCCEEDED            => 'NotificationRefundSucceeded',
         NotificationEventType::PAYMENT_SUCCEEDED           => 'NotificationSucceeded',
         NotificationEventType::PAYMENT_WAITING_FOR_CAPTURE => 'NotificationWaitingForCapture',
+
+        NotificationEventType::DEAL_CLOSED                 => 'NotificationDealClosed',
+        NotificationEventType::PAYOUT_CANCELED             => 'NotificationPayoutCanceled',
+        NotificationEventType::PAYOUT_SUCCEEDED            => 'NotificationPayoutSucceeded',
     );
 
     /**

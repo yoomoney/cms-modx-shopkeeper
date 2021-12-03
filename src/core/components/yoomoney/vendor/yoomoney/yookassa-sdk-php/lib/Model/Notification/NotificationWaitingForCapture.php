@@ -41,7 +41,9 @@ use YooKassa\Request\Payments\PaymentResponse;
  * указанный в настройках API посылается уведомление о том, что платёж теперь может быть проведён. В классе описана
  * структура такого объекта для магазинов, которые получают уведомления на HTTPS endpoint.
  *
- * @package YooKassa\Model\Notification
+ * @example 03-notification.php 3 Пример скрипта обработки уведомления
+ *
+ * @package YooKassa
  *
  * @property-read PaymentInterface $object Объект с информацией о платеже, который можно подтвердить или отменить
  */
@@ -63,7 +65,7 @@ class NotificationWaitingForCapture extends AbstractNotification
      * тела пришедшего запроса. При конструировании проверяется валидность типа передаваемого уведомления, если
      * передать уведомление не того типа, будет сгенерировано исключение типа {@link InvalidPropertyValueException}
      *
-     * @param array $source Ассоциативный массив с информацией о уведомлении
+     * @param array $source Ассоциативный массив с информацией об уведомлении
      *
      * @throws InvalidPropertyValueException Генерируется если значение типа нотификации или события не равны
      * "notification" и "payment.waiting_for_capture" соответственно, что может говорить о том, что переданные в
