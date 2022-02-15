@@ -7,7 +7,7 @@
  *
  * @author YooMoney
  * @package yoomoney
- * @version 2.0.2
+ * @version 2.0.3
  */
 use YooKassa\Client;
 use YooKassa\Model\ConfirmationType;
@@ -22,7 +22,7 @@ $modx->addPackage('yoomoney', YOOMONEY_PATH . 'model/');
 
 class Yoomoney
 {
-    const MODULE_VERSION = '2.0.2';
+    const MODULE_VERSION = '2.0.3';
 
     /** @var int Оплата через ЮMoney вообще не используется */
     const MODE_NONE = 0;
@@ -87,6 +87,12 @@ class Yoomoney
     public $debug_log;
 
     private $_apiClient;
+
+    public static $disabledMethods = array(
+        PaymentMethodType::B2B_SBERBANK,
+        PaymentMethodType::WECHAT,
+        PaymentMethodType::WEBMONEY,
+    );
 
     function __construct(modX &$modx, $config = array())
     {
@@ -168,7 +174,7 @@ class Yoomoney
                 PaymentMethodType::CASH => array('cash', 'Оплата наличными через кассы и терминалы'),
                 PaymentMethodType::WEBMONEY => array('wm', 'Оплата из кошелька в системе WebMoney'),
                 PaymentMethodType::QIWI => array('qw', 'Оплата через QIWI Wallet'),
-                PaymentMethodType::SBERBANK => array('sb', 'Оплата через Сбербанк: оплата по SMS или Сбербанк Онлайн'),
+                PaymentMethodType::SBERBANK => array('sb', 'Оплата через Сбербанк: оплата по SMS или SberPay'),
                 PaymentMethodType::YOO_MONEY => array('ym', 'Оплата из кошелька ЮMoney'),
                 PaymentMethodType::BANK_CARD => array('cards', 'Оплата с произвольной банковской карты'),
                 PaymentMethodType::INSTALLMENTS => array('installments', 'Заплатить по частям'),
@@ -176,10 +182,12 @@ class Yoomoney
             );
             $list_methods = array();
             foreach (PaymentMethodType::getEnabledValues() as $paymentMethodCode) {
-                $list_methods[$paymentMethodCode] = array(
-                    'key'   => $translations[$paymentMethodCode][0],
-                    'label' => $translations[$paymentMethodCode][1],
-                );
+                if (!in_array($paymentMethodCode, self::$disabledMethods)) {
+                    $list_methods[$paymentMethodCode] = array(
+                        'key' => $translations[$paymentMethodCode][0],
+                        'label' => $translations[$paymentMethodCode][1],
+                    );
+                }
             }
             $output = '';
             foreach ($list_methods as $long_name => $method_desc) {
